@@ -3408,7 +3408,6 @@ void calc_zone_watermarks(struct zoneinfo *zi, struct zone_meminfo *zmi, int64_t
 #ifdef ENABLE_TRACING
             ALOGE("%s pgskip_deltas_val: %" PRId64 " pgskip_deltas[PGSKIP_IDX(i++)]: %" PRId64, __func__, pgskip_deltas_val, pgskip_deltas[PGSKIP_IDX(i++)]);
 #endif
-
             if (!pgskip_deltas_val) {
                 zmi->nr_free_pages += zone->fields.field.nr_free_pages;
                 zmi->cma_free += zone->fields.field.nr_free_cma;
@@ -3435,7 +3434,8 @@ void calc_zone_watermarks(struct zoneinfo *zi, struct zone_meminfo *zmi, int64_t
         watermarks->min_wmark = max_min + max_protection;
     }
 
-    log_zone_watermarks(zi);
+    if (debug_process_killing)
+        log_zone_watermarks(zi);
 }
 
 static void log_meminfo(union meminfo *mi)
